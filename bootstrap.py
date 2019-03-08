@@ -74,7 +74,7 @@ def form_sample():
         print(request.form['sex'])
         return "Форма отправлена"
 
-@app.route('/ /file_sample', methods=['POST', 'GET'])
+@app.route('/file_sample', methods=['POST', 'GET'])
 def sample_file_upload():
     if request.method == 'GET':
         return '''<!doctype html>
