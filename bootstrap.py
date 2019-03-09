@@ -74,6 +74,7 @@ def form_sample():
         print(request.form['sex'])
         return "Форма отправлена"
 
+
 @app.route('/file_sample', methods=['POST', 'GET'])
 def sample_file_upload():
     if request.method == 'GET':
@@ -102,9 +103,12 @@ def sample_file_upload():
                         </html>'''
     elif request.method == 'POST':
         f = request.files['file']
-        print(f.read())
+        text = str(f.read())
+        f2 = open("save_file", 'tw', encoding="utf8")
+        f2.write(text)
+        f2.close()
         return "Форма отправлена"
 
 
 if __name__ == '__main__':
-    app.run(port=8000, host='127.0.0.1')
+    app.run(port=8888, host='127.0.0.1')
