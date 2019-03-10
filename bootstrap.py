@@ -1,6 +1,15 @@
-from flask import Flask, request
+from flask_wtf import FlaskForm
+
+from flask import Flask, request, render_template
+
+from wtforms import StringField, IntegerField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
+
+
+class NumberForm(FlaskForm):
+    Number = StringField('Логин', validators=[DataRequired()])
 
 
 @app.route('/form_sample', methods=['POST', 'GET'])
@@ -110,5 +119,42 @@ def sample_file_upload():
         return "Форма отправлена"
 
 
+@app.route('/odd_even', methods=['POST', 'GET'])
+def odd_even():
+    if request.method == 'GET':
+        return '''<!doctype html>
+                                <html lang="en">
+                                  <head>
+                                    <meta charset="utf-8">
+                                    <meta name="viewport"
+                                    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                                    <link rel="stylesheet"
+                                    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                                    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                                    crossorigin="anonymous">
+                                    <title>Пример формы</title>
+                                  </head>
+                                  <body>
+                                    <form method="post">
+                                        <div class="form-group">
+                                            <label for="about">Ваше число</label>
+                                            <textarea class="form-control" id="about" rows="1" name="about"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Отправить</button>
+                                    </form>
+                                  </body>
+                                </html>'''
+
+
+    elif request.method == 'POST':
+        try:
+            n = int(request.form['about'])
+            er = False
+        except ValueError:
+            n = request.form['about']
+            er = True
+        return render_template('odd_even.html', number=n, error=er)
+
+
 if __name__ == '__main__':
-    app.run(port=8888, host='127.0.0.1')
+    app.run(port=8088, host='127.0.0.1')
